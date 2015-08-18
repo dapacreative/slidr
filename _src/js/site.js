@@ -23,7 +23,7 @@ var Site = (function($) {
 
     initSlider: function() {
       this.$slider.slidr({
-        mode: "vertical"
+        mode: "fade"
       });
     }
   

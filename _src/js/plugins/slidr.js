@@ -9,6 +9,7 @@
       speed: 500,
       transitionSpeed: 500,
       easing: 'ease',
+      start: 1,
       pagination: {
         active: true,
         location: 'bottom'
@@ -38,7 +39,7 @@
         containers: [this.$elem],
         slideCount: this.$slides.length,
         initialized: false,
-        currentSlide: 0,
+        currentSlide: this.settings.start - 1,
         nextSlide: 0,
         direction: 'left',
         animating: false
