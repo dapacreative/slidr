@@ -1,0 +1,36 @@
+//Screen Sizes
+$desktop: 1200px;
+$desktopNarrow: 1100px;
+$tablet: 768px;
+$mobile: 600px;
+$mobileNarrow: 400px;
+
+//Mobile Padding
+$mobilePadding: 20px;
+
+//Font Weights
+$light: 300;
+$normal: 400;
+$semiBold: 600;
+$bold: 700;
+
+//Fonts
+$baseFont: 'Open Sans', Helvetica, sans-serif;
+
+//Colors
+$baseColor: #333;
+
+$gray: #bbb;
+$lightGray: #D1D1D1;
+$darkGray: #888;
+
+$blue: #1EAEDB;
+$blueHover: #0FA0CE;
+
+$blueAlt: #33C3F0;
+
+//Sprites
+$ieSprite: '.lt-ie9' !default;
+$sprite: map-get($icons, sprite) !default;
+$baseFontSize: 16px !default;
+$iconPadding: 5px;

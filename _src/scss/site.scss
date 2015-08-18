@@ -1,0 +1,25 @@
+//Normalize
+@import "normalize.scss";
+
+//Helpers
+@import "helpers/sprite.scss";
+@import "helpers/variables.scss";
+@import "helpers/mixins.scss";
+@import "helpers/h5bp.scss";
+
+//Base
+@import "base/base.scss";
+@import "base/typography.scss";
+@import "base/buttons.scss";
+@import "base/forms.scss";
+
+//Layout
+@import "layout/grid.scss";
+@import "layout/header.scss";
+@import "layout/footer.scss";
+
+//Modules
+@import "modules/slidr.scss";
+
+//Templates
+@import "templates/home.scss";
