@@ -23,9 +23,9 @@ var Site = (function($) {
 
     initSlider: function() {
       this.$slider.slidr({
-        mode: "horizontal",
+        mode: "vertical",
         easing: "cubic-bezier(1,.1,0,0.9)",
-        transitionSpeed: 500
+        speed: 500
       });
     }
   

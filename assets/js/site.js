@@ -7,7 +7,7 @@
     defaults = {
       mode: "fade",
       speed: 500,
-      transitionSpeed: 500,
+      slideDuration: 500,
       easing: 'ease',
       start: 1,
       pagination: {
@@ -36,7 +36,7 @@
     setup: function() {
       return {
         dimensions: this.getDimensions(),
-        containers: [this.$elem, this.$container],
+        containers: [this.$elem],
         slideCount: this.$slides.length,
         initialized: false,
         currentSlide: this.settings.start - 1,
@@ -210,6 +210,10 @@
           $next.addClass('wipe ' + options.direction);
           this.transition($next, $current);
           break;
+        case 'scale':
+          $next.addClass('scale');
+          this.transition($next, $current);
+          break;
         case 'horizontal':
           $current.addClass('horizontal ' + options.direction);
           $next.addClass('wipe ' + options.direction);
@@ -242,13 +246,13 @@
         this.setCurrentSlide(this.setup.currentSlide);
         current.attr('class','');
         this.setup.animating = false;
-      }.bind(this),100 + this.settings.transitionSpeed);
+      }.bind(this),100 + this.settings.speed);
     },
 
     addTransitionSettings: function(elem){
       var _ = this;
       this.$slides.each(function(){
-        this.style[_.csstransitions+'Duration'] = _.settings.transitionSpeed + 'ms';
+        this.style[_.csstransitions+'Duration'] = _.settings.speed + 'ms';
         this.style[_.csstransitions+'TimingFunction'] = _.settings.easing;
       });
     },
@@ -358,9 +362,9 @@ var Site = (function($) {
 
     initSlider: function() {
       this.$slider.slidr({
-        mode: "horizontal",
+        mode: "vertical",
         easing: "cubic-bezier(1,.1,0,0.9)",
-        transitionSpeed: 500
+        speed: 500
       });
     }
   
