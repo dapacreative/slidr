@@ -23,7 +23,9 @@ var Site = (function($) {
 
     initSlider: function() {
       this.$slider.slidr({
-        mode: "fade"
+        mode: "horizontal",
+        easing: "cubic-bezier(1,.1,0,0.9)",
+        transitionSpeed: 500
       });
     }
   

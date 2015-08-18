@@ -36,7 +36,7 @@
     setup: function() {
       return {
         dimensions: this.getDimensions(),
-        containers: [this.$elem],
+        containers: [this.$elem, this.$container],
         slideCount: this.$slides.length,
         initialized: false,
         currentSlide: this.settings.start - 1,
@@ -47,6 +47,9 @@
     },
     
     init: function() {
+      // Test for CSS transitions
+      this.cssTransitionTest();
+
       // Create a container around slider
       this.wrapElem();
 
@@ -95,6 +98,21 @@
       this.$container.addClass('init');
       this.setCurrentSlide(this.setup.currentSlide);
       if(this.settings.pagination.active) this.setCurrentPagination(this.setup.currentSlide);
+    },
+
+    cssTransitionTest: function() {
+      var elem = document.createElement('modernizr');
+      //A list of properties to test for
+      var props = ["transition","WebkitTransition","MozTransition","OTransition","msTransition"];
+      //Iterate through our new element's Style property to see if these properties exist
+      for ( var i in props ) {
+        var prop = props[i];
+        var result = elem.style[prop] !== undefined ? prop : false;
+        if (result){
+          this.csstransitions = result;
+          break;
+        } 
+      }
     },
 
     build: function() {
@@ -213,14 +231,14 @@
 
     transition: function(next, current) {
       setTimeout(function(){
-        //this.addTransitionSettings(elem);
+        this.addTransitionSettings(next);
         this.$elem.addClass('animating');   
         this.setup.animating = true;
       }.bind(this),100);
 
       setTimeout(function(){
         this.$elem.removeClass('animating');
-        //this.removeTransitionSettings(elem);  
+        this.removeTransitionSettings(next);  
         this.setCurrentSlide(this.setup.currentSlide);
         current.attr('class','');
         this.setup.animating = false;
@@ -228,16 +246,19 @@
     },
 
     addTransitionSettings: function(elem){
-      var style = {};
-
-      style['transitionDuration'] = this.settings.transitionSpeed + 's';
-      style['transitionTimingFunction'] = this.settings.easing;
-
-      elem.css(style);
+      var _ = this;
+      this.$slides.each(function(){
+        this.style[_.csstransitions+'Duration'] = _.settings.transitionSpeed + 'ms';
+        this.style[_.csstransitions+'TimingFunction'] = _.settings.easing;
+      });
     },
 
     removeTransitionSettings: function(elem){
-      elem.css();
+      var _ = this;
+      this.$slides.each(function(){
+        this.style[_.csstransitions+'Duration'] = '';
+        this.style[_.csstransitions+'TimingFunction'] = '';
+      });
     },
 
     getDimensions: function() {

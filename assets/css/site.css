@@ -390,7 +390,7 @@ label > .label-body { display: inline-block; margin-left: .5rem; font-weight: no
 .slidr-container.init .slidr { opacity: 1; visibility: visible; }
 
 .slidr { position: relative; overflow: hidden; margin: 0; padding: 0; list-style: none; width: 100%; z-index: 1; opacity: 0; visibility: hidden; }
-.slidr.animating > * { -webkit-transition: all 0.3s ease; transition: all 0.3s ease; }
+.slidr.animating > * { -webkit-transition-property: all; transition-property: all; }
 .slidr.animating > *.fade { opacity: 1; }
 .slidr.animating > *.wipe.left, .slidr.animating > *.wipe.right { -webkit-transform: translateZ(0) translateX(0); transform: translateZ(0) translateX(0); }
 .slidr.animating > *.horizontal.left { -webkit-transform: translateZ(0) translateX(100%); transform: translateZ(0) translateX(100%); }

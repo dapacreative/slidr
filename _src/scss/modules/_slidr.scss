@@ -22,7 +22,7 @@
   visibility: hidden;
   &.animating {
     & > * {
-      transition: all 0.3s ease;
+      transition-property: all;
       &.fade {
         opacity: 1;
       }
