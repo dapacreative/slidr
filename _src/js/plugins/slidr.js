@@ -249,6 +249,11 @@
           $next.addClass('wipe ' + options.direction);
           this.cssTransition($next, $current);
           break;
+        case 'wipe-out':
+          $current.addClass('wipe-out ' + options.direction);
+          $next.addClass('behind');
+          this.cssTransition($next, $current);
+          break;
         case 'scale':
           $next.addClass('scale');
           this.cssTransition($next, $current);

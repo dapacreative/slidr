@@ -33,6 +33,12 @@
       &.wipe.left, &.wipe.right {
         transform: translateZ(0) translateX(0);
       }
+      &.wipe-out.left {
+        transform: translateZ(0) translateX(100%);
+      }
+      &.wipe-out.right {
+        transform: translateZ(0) translateX(-100%);
+      }
       &.horizontal.left {
         transform: translateZ(0) translateX(100%);
       }
@@ -90,6 +96,19 @@
       }
       &.left {
         transform: translateZ(0) translateX(-100%);
+      }
+    }
+    &.behind {
+      opacity: 1;
+      z-index: 99;
+    }
+    &.wipe-out {
+      opacity: 1;
+      &.right {
+        transform: translateZ(0) translateX(0);
+      }
+      &.left {
+        transform: translateZ(0) translateX(0);
       }
     }
     &.horizontal {

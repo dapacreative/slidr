@@ -249,6 +249,11 @@
           $next.addClass('wipe ' + options.direction);
           this.cssTransition($next, $current);
           break;
+        case 'wipe-out':
+          $current.addClass('wipe-out ' + options.direction);
+          $next.addClass('behind');
+          this.cssTransition($next, $current);
+          break;
         case 'scale':
           $next.addClass('scale');
           this.cssTransition($next, $current);
@@ -427,7 +432,7 @@ var Site = (function($) {
 
     initSlider: function() {
       this.$slider.slidr({
-        mode: "horizontal",
+        mode: "wipe-out",
         easing: "cubic-bezier(1,.1,0,0.9)",
         speed: 500
       });

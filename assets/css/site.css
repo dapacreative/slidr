@@ -394,6 +394,8 @@ label > .label-body { display: inline-block; margin-left: .5rem; font-weight: no
 .slidr.animating > *.fade { opacity: 1; }
 .slidr.animating > *.scale { border-radius: 0; -webkit-transform: scale(1); -ms-transform: scale(1); transform: scale(1); }
 .slidr.animating > *.wipe.left, .slidr.animating > *.wipe.right { -webkit-transform: translateZ(0) translateX(0); transform: translateZ(0) translateX(0); }
+.slidr.animating > *.wipe-out.left { -webkit-transform: translateZ(0) translateX(100%); transform: translateZ(0) translateX(100%); }
+.slidr.animating > *.wipe-out.right { -webkit-transform: translateZ(0) translateX(-100%); transform: translateZ(0) translateX(-100%); }
 .slidr.animating > *.horizontal.left { -webkit-transform: translateZ(0) translateX(100%); transform: translateZ(0) translateX(100%); }
 .slidr.animating > *.horizontal.right { -webkit-transform: translateZ(0) translateX(-100%); transform: translateZ(0) translateX(-100%); }
 .slidr.animating > *.vertical-next.left, .slidr.animating > *.vertical-next.right { -webkit-transform: translateZ(0) translateY(0); transform: translateZ(0) translateY(0); }
@@ -408,6 +410,10 @@ label > .label-body { display: inline-block; margin-left: .5rem; font-weight: no
 .slidr > *.wipe { opacity: 1; z-index: 101; }
 .slidr > *.wipe.right { -webkit-transform: translateZ(0) translateX(100%); transform: translateZ(0) translateX(100%); }
 .slidr > *.wipe.left { -webkit-transform: translateZ(0) translateX(-100%); transform: translateZ(0) translateX(-100%); }
+.slidr > *.behind { opacity: 1; z-index: 99; }
+.slidr > *.wipe-out { opacity: 1; }
+.slidr > *.wipe-out.right { -webkit-transform: translateZ(0) translateX(0); transform: translateZ(0) translateX(0); }
+.slidr > *.wipe-out.left { -webkit-transform: translateZ(0) translateX(0); transform: translateZ(0) translateX(0); }
 .slidr > *.horizontal { opacity: 1; z-index: 101; -webkit-transform: translateZ(0) translateY(0); transform: translateZ(0) translateY(0); }
 .slidr > *.vertical-next { opacity: 1; z-index: 101; }
 .slidr > *.vertical-next.right { -webkit-transform: translateZ(0) translateY(100%); transform: translateZ(0) translateY(100%); }
