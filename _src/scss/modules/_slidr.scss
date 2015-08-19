@@ -122,7 +122,31 @@
   list-style: none;
   font-size: 0;
   text-align: center;
-  z-index: 101;
+  z-index: 102;
+  &.over {
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    padding: 20px 0;
+    left: 0;
+    right: 0;
+    li {
+      background: white;
+      &.active {
+        background: black;
+      }
+    }
+  }
+  &.hide {
+    &:hover {
+      li {
+        @include fade-in;
+      }
+    }
+    li {
+      @include fade-out;
+    }
+  }
   li {
     font-size: 14px;
     display: inline-block;
@@ -189,6 +213,6 @@
   }
 }
 
-.slidr-container + .slidr-pagination {
+.slidr + .slidr-pagination {
   margin: 20px 0 0 0;
 }

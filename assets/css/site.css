@@ -414,7 +414,12 @@ label > .label-body { display: inline-block; margin-left: .5rem; font-weight: no
 .slidr > *.vertical-next.left { -webkit-transform: translateZ(0) translateY(-100%); transform: translateZ(0) translateY(-100%); }
 .slidr > *.vertical { opacity: 1; z-index: 101; -webkit-transform: translateZ(0) translateY(0); transform: translateZ(0) translateY(0); }
 
-.slidr-pagination { position: relative; padding: 0; margin: 0 0 20px 0; list-style: none; font-size: 0; text-align: center; z-index: 101; }
+.slidr-pagination { position: relative; padding: 0; margin: 0 0 20px 0; list-style: none; font-size: 0; text-align: center; z-index: 102; }
+.slidr-pagination.over { position: absolute; bottom: 0; margin: 0; padding: 20px 0; left: 0; right: 0; }
+.slidr-pagination.over li { background: white; }
+.slidr-pagination.over li.active { background: black; }
+.slidr-pagination.hide:hover li { visibility: visible; opacity: 1; -webkit-transition: opacity 0.3s ease 0s; transition: opacity 0.3s ease 0s; }
+.slidr-pagination.hide li { visibility: hidden; opacity: 0; -webkit-transition: visibility 0s 0.3s, opacity 0.3s ease; transition: visibility 0s 0.3s, opacity 0.3s ease; }
 .slidr-pagination li { font-size: 14px; display: inline-block; width: 20px; height: 20px; margin: 0 4px; background: #ccc; border-radius: 100%; cursor: pointer; text-indent: -9999px; }
 .slidr-pagination li.active { background: black; }
 
@@ -428,4 +433,4 @@ label > .label-body { display: inline-block; margin-left: .5rem; font-weight: no
 .slidr-navigation li.hide:hover:after { visibility: visible; opacity: 1; -webkit-transition: opacity 0.3s ease 0s; transition: opacity 0.3s ease 0s; }
 .slidr-navigation li.hide:after { visibility: hidden; opacity: 0; -webkit-transition: visibility 0s 0.3s, opacity 0.3s ease; transition: visibility 0s 0.3s, opacity 0.3s ease; }
 
-.slidr-container + .slidr-pagination { margin: 20px 0 0 0; }
+.slidr + .slidr-pagination { margin: 20px 0 0 0; }

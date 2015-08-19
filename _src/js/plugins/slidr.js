@@ -13,7 +13,8 @@
       pauseOnHover: true,
       pagination: {
         active: true,
-        location: 'bottom'
+        location: 'bottom',
+        showOnHover: false
       },
       navigation: {
         active: true,
@@ -342,13 +343,32 @@
       };
       pagination += '</ul>';
 
-      if(location === 'bottom') {
-        this.$container.after(pagination);
-        this.$pagination = this.$container.next('.slidr-pagination');
-      } else if (location === 'top') {
-        this.$container.before(pagination);
-        this.$pagination = this.$container.prev('.slidr-pagination');
+      switch (location) {
+        case 'bottom':
+          this.$elem.after(pagination);
+          this.$pagination = this.$elem.next('.slidr-pagination');
+          break;
+        case 'top':
+          this.$elem.before(pagination);
+          this.$pagination = this.$elem.prev('.slidr-pagination');
+          break;
+        case 'over':
+          this.$elem.after(pagination);
+          this.$pagination = this.$elem.next('.slidr-pagination');
+          this.$pagination.addClass('over');
+          break;
+        default: 
+          this.$elem.after(pagination);
+          this.$pagination = this.$elem.next('.slidr-pagination');
+          this.$pagination.addClass('over');
+          break;
       }
+
+      if (this.settings.pagination.showOnHover) this.hidePagination();
+    },
+
+    hidePagination: function() {
+      this.$pagination.addClass('hide');
     },
 
     createNavigation: function() {
