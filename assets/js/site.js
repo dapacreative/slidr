@@ -400,7 +400,7 @@ var Site = (function($) {
 
     initSlider: function() {
       this.$slider.slidr({
-        mode: "wipe",
+        mode: "horizontal",
         easing: "cubic-bezier(1,.1,0,0.9)",
         speed: 500
       });

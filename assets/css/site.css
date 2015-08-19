@@ -419,8 +419,11 @@ label > .label-body { display: inline-block; margin-left: .5rem; font-weight: no
 .slidr-pagination li.active { background: black; }
 
 .slidr-navigation { padding: 0; margin: 0; list-style: none; }
-.slidr-navigation li { font-size: 14px; position: absolute; top: 50%; z-index: 101; display: block; width: 80px; padding: 10px 0; color: white; text-align: center; cursor: pointer; background: rgba(0, 0, 0, 0.8); -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%); }
+.slidr-navigation li { position: absolute; top: 0; bottom: 0; width: 50px; cursor: pointer; z-index: 102; text-indent: -9999px; }
+.slidr-navigation li:after { content: ''; position: absolute; top: 50%; display: block; width: 30px; height: 30px; border: 2px solid white; border-width: 3px 3px 0 0; color: white; }
 .slidr-navigation li.slidr-prev { left: 0; }
+.slidr-navigation li.slidr-prev:after { left: 30px; -webkit-transform: translateY(-50%) rotate(225deg); -ms-transform: translateY(-50%) rotate(225deg); transform: translateY(-50%) rotate(225deg); }
 .slidr-navigation li.slidr-next { right: 0; }
+.slidr-navigation li.slidr-next:after { right: 30px; -webkit-transform: translateY(-50%) rotate(45deg); -ms-transform: translateY(-50%) rotate(45deg); transform: translateY(-50%) rotate(45deg); }
 
 .slidr-container + .slidr-pagination { margin: 20px 0 0 0; }
