@@ -7,7 +7,7 @@
     defaults = {
       mode: "fade",
       speed: 500,
-      slideDuration: 4000,
+      slideDuration: 0,
       easing: 'ease',
       start: 1,
       pauseOnHover: true,
@@ -42,7 +42,7 @@
         initialized: false,
         currentSlide: this.settings.start - 1,
         nextSlide: 0,
-        direction: 'left',
+        direction: 'right',
         animating: false
       }
     },
@@ -150,7 +150,13 @@
 
     changeSlide: function(event) {
       //Prevent Clicking if animation is in progres
-      if (this.setup.animating) return;    
+      if (this.setup.animating) return;
+
+      // Init animating setting
+      this.setup.animating = true;
+
+      //Reset Autoplay Timer
+      this.stopAutoPlay();    
 
       //Set Direction
       this.direction(event);
@@ -268,7 +274,6 @@
       setTimeout(function(){
         this.addTransitionSettings(next);
         this.$elem.addClass('animating');   
-        this.setup.animating = true;
       }.bind(this),100);
 
       setTimeout(function(){
@@ -276,6 +281,8 @@
         this.removeTransitionSettings(next);  
         this.setCurrentSlide(this.setup.currentSlide);
         current.attr('class','');
+        this.startAutoPlay();
+        // Remove animating setting
         this.setup.animating = false;
       }.bind(this),100 + this.settings.speed);
     },
