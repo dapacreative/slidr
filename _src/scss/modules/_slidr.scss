@@ -126,19 +126,15 @@
   li {
     font-size: 14px;
     display: inline-block;
-    a {
-      display: block;
-      width: 20px;
-      height: 20px;
-      margin: 0 4px;
-      background: #ccc;
-      border-radius: 100%;
-      text-indent: -9999px;
-    }
+    width: 20px;
+    height: 20px;
+    margin: 0 4px;
+    background: #ccc;
+    border-radius: 100%;
+    cursor: pointer;
+    text-indent: -9999px;
     &.active {
-      a {
-        background: black;
-      }
+      background: black;
     }
   }
 }
@@ -152,21 +148,19 @@
     position: absolute;
     top: 50%;
     z-index: 101;
+    display: block;
+    width: 80px;
+    padding: 10px 0;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(black, 0.8);
     transform: translateY(-50%);
     &.slidr-prev {
       left: 0;
     }
     &.slidr-next {
       right: 0;
-    }
-    a {
-      display: block;
-      width: 80px;
-      padding: 10px 0;
-      color: white;
-      text-align: center;
-      text-decoration: none;
-      background: rgba(black, 0.8);
     }
   }
 }

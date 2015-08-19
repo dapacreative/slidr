@@ -7,9 +7,10 @@
     defaults = {
       mode: "fade",
       speed: 500,
-      slideDuration: 500,
+      slideDuration: 4000,
       easing: 'ease',
       start: 1,
+      pauseOnHover: true,
       pagination: {
         active: true,
         location: 'bottom'
@@ -91,13 +92,19 @@
         this.$next.on('click', {direction:'right'}, this.changeSlide.bind(this));
         this.$prev.on('click', {direction:'left'}, this.changeSlide.bind(this));
       }
-      if(this.settings.pagination.active) this.$pagination.find('a').on('click', this.changeSlide.bind(this));
+
+      if(this.settings.pagination.active) this.$pagination.find('li').on('click', this.changeSlide.bind(this));
+
+      if(this.settings.pauseOnHover) {
+        this.$elem.hover(this.stopAutoPlay.bind(this), this.startAutoPlay.bind(this));
+      }
     },
 
     start: function() {
       this.$container.addClass('init');
       this.setCurrentSlide(this.setup.currentSlide);
       if(this.settings.pagination.active) this.setCurrentPagination(this.setup.currentSlide);
+      this.startAutoPlay();
     },
 
     cssTransitionTest: function() {
@@ -125,10 +132,23 @@
       this.setup.initialized = true;
     },
 
-    changeSlide: function(event) {
-      //Prevent Default
-      event.preventDefault();
+    initAutoPlay: function() {
+      this.timer = setInterval(function(){
+        this.changeSlide();
+      }.bind(this), this.settings.slideDuration + this.settings.speed);
+    },
 
+    startAutoPlay: function() {
+      if (this.settings.slideDuration === 0) return;
+      
+      this.initAutoPlay();
+    },
+
+    stopAutoPlay: function() {
+      if (this.timer) clearInterval(this.timer);
+    },
+
+    changeSlide: function(event) {
       //Prevent Clicking if animation is in progres
       if (this.setup.animating) return;    
 
@@ -143,23 +163,34 @@
       this.animateSlide(this.setup, this.settings);
     },
 
-    direction: function(event) {
-      var index = $(event.currentTarget).data('item');
+    direction: function(event) {    
+      if (typeof event !== 'undefined') {
+        //Triggered by event
+        if (typeof event.data !== 'undefined') {
+          this.setup.direction = event.data.direction;
+        } else {
+          var index = $(event.currentTarget).data('item');
 
-      if (typeof event.data !== 'undefined') {
-        this.setup.direction = event.data.direction;
-      } else {
-        if (index < this.setup.currentSlide) {
-          this.setup.direction = 'left';
-        } else if (index > this.setup.currentSlide) {
-          this.setup.direction = 'right';
+          if (index < this.setup.currentSlide) {
+            this.setup.direction = 'left';
+          } else if (index > this.setup.currentSlide) {
+            this.setup.direction = 'right';
+          }
         }
+      } else {
+        //Autoplay
+        this.setup.direction = 'right';
       }
     },
 
     next: function(event) {
-      var index = (typeof event.data === 'undefined') ? $(event.currentTarget).data('item') : undefined,
-          slideCount = (this.setup.slideCount - 1);
+      var slideCount = (this.setup.slideCount - 1),
+          index = undefined;
+
+      //Triggered by event
+      if (typeof event !== 'undefined') {
+        index = (typeof event.data === 'undefined') ? $(event.currentTarget).data('item') : undefined;
+      }
 
       //If Pagination
       if (index !== undefined) { 
@@ -204,36 +235,36 @@
       switch(this.settings.mode) {
         case 'fade':
           $next.addClass('fade');
-          this.transition($next, $current);
+          this.cssTransition($next, $current);
           break;
         case 'wipe':
           $next.addClass('wipe ' + options.direction);
-          this.transition($next, $current);
+          this.cssTransition($next, $current);
           break;
         case 'scale':
           $next.addClass('scale');
-          this.transition($next, $current);
+          this.cssTransition($next, $current);
           break;
         case 'horizontal':
           $current.addClass('horizontal ' + options.direction);
           $next.addClass('wipe ' + options.direction);
-          this.transition($next, $current);
+          this.cssTransition($next, $current);
           break;
         case 'vertical':
           $current.addClass('vertical ' + options.direction);
           $next.addClass('vertical-next ' + options.direction);
-          this.transition($next, $current);
+          this.cssTransition($next, $current);
           break;
         default: 
           $next.addClass('fade');
-          this.transition($next, $current);
+          this.cssTransition($next, $current);
       }
 
       this.setup.currentSlide = this.setup.nextSlide;
       if(this.settings.pagination.active) this.setCurrentPagination(this.setup.currentSlide); 
     },
 
-    transition: function(next, current) {
+    cssTransition: function(next, current) {
       setTimeout(function(){
         this.addTransitionSettings(next);
         this.$elem.addClass('animating');   
@@ -299,7 +330,7 @@
     createPagination: function(location) {
       var pagination = '<ul class="slidr-pagination">';
       for (var i = 0; i < this.setup.slideCount; i++) {
-        pagination += '<li><a href="" data-item="'+i+'">'+(i)+'</a></li>';
+        pagination += '<li data-item="'+i+'">'+(i)+'</li>';
       };
       pagination += '</ul>';
 
@@ -314,14 +345,14 @@
 
     createNavigation: function() {
       var navigation = '<ul class="slidr-navigation">';
-          navigation += '<li class="slidr-prev"><a href="">Prev</a></li>';
-          navigation += '<li class="slidr-next"><a href="">Next</a></li>';
+          navigation += '<li class="slidr-prev">Prev</li>';
+          navigation += '<li class="slidr-next">Next</li>';
           navigation += '</ul>';
       this.$elem.after(navigation);
 
       this.$navigation = this.$container.find('.slidr-navigation');
-      this.$next = this.$navigation.find('.slidr-next a');
-      this.$prev = this.$navigation.find('.slidr-prev a');
+      this.$next = this.$navigation.find('.slidr-next');
+      this.$prev = this.$navigation.find('.slidr-prev');
     }
 
   });
@@ -362,7 +393,7 @@ var Site = (function($) {
 
     initSlider: function() {
       this.$slider.slidr({
-        mode: "vertical",
+        mode: "wipe",
         easing: "cubic-bezier(1,.1,0,0.9)",
         speed: 500
       });
