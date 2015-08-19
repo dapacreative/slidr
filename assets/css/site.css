@@ -425,5 +425,7 @@ label > .label-body { display: inline-block; margin-left: .5rem; font-weight: no
 .slidr-navigation li.slidr-prev:after { left: 30px; -webkit-transform: translateY(-50%) rotate(225deg); -ms-transform: translateY(-50%) rotate(225deg); transform: translateY(-50%) rotate(225deg); }
 .slidr-navigation li.slidr-next { right: 0; }
 .slidr-navigation li.slidr-next:after { right: 30px; -webkit-transform: translateY(-50%) rotate(45deg); -ms-transform: translateY(-50%) rotate(45deg); transform: translateY(-50%) rotate(45deg); }
+.slidr-navigation li.hide:hover:after { visibility: visible; opacity: 1; -webkit-transition: opacity 0.3s ease 0s; transition: opacity 0.3s ease 0s; }
+.slidr-navigation li.hide:after { visibility: hidden; opacity: 0; -webkit-transition: visibility 0s 0.3s, opacity 0.3s ease; transition: visibility 0s 0.3s, opacity 0.3s ease; }
 
 .slidr-container + .slidr-pagination { margin: 20px 0 0 0; }

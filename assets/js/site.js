@@ -16,7 +16,8 @@
         location: 'bottom'
       },
       navigation: {
-        active: true
+        active: true,
+        showOnHover: false
       },
       responsive: true
     };
@@ -88,14 +89,14 @@
         this.setDimensions(this.setup.containers, this.setup.dimensions);
       }.bind(this));
 
-      if(this.settings.navigation.active) {
+      if (this.settings.navigation.active) {
         this.$next.on('click', {direction:'right'}, this.changeSlide.bind(this));
         this.$prev.on('click', {direction:'left'}, this.changeSlide.bind(this));
       }
 
-      if(this.settings.pagination.active) this.$pagination.find('li').on('click', this.changeSlide.bind(this));
+      if (this.settings.pagination.active) this.$pagination.find('li').on('click', this.changeSlide.bind(this));
 
-      if(this.settings.pauseOnHover) {
+      if (this.settings.pauseOnHover) {
         this.$elem.hover(this.stopAutoPlay.bind(this), this.startAutoPlay.bind(this));
       }
     },
@@ -360,6 +361,12 @@
       this.$navigation = this.$container.find('.slidr-navigation');
       this.$next = this.$navigation.find('.slidr-next');
       this.$prev = this.$navigation.find('.slidr-prev');
+
+      if (this.settings.navigation.showOnHover) this.hideNavigation();
+    },
+
+    hideNavigation: function() {
+      this.$navigation.find('li').addClass('hide');
     }
 
   });

@@ -176,6 +176,16 @@
         transform: translateY(-50%) rotate(45deg);
       }
     }
+    &.hide {
+      &:hover {
+        &:after {
+          @include fade-in;
+        }
+      }
+      &:after {
+        @include fade-out;
+      }
+    }
   }
 }
 
