@@ -20,6 +20,8 @@
         active: true,
         showOnHover: false
       },
+      touchEnabled: true,
+      swipeThreshold: 50,
       responsive: true
     };
 
@@ -73,6 +75,9 @@
 
       // Bind Events
       this.bindEvents();
+
+      // Init Touch 
+      if(this.settings.touchEnabled) this.initTouch();
     },
 
     cacheDom: function() {
@@ -91,8 +96,8 @@
       }.bind(this));
 
       if (this.settings.navigation.active) {
-        this.$next.on('click', {direction:'right'}, this.changeSlide.bind(this));
-        this.$prev.on('click', {direction:'left'}, this.changeSlide.bind(this));
+        this.$next.on('click swipe-right', {direction:'right'}, this.changeSlide.bind(this));
+        this.$prev.on('click swipe-left', {direction:'left'}, this.changeSlide.bind(this));
       }
 
       if (this.settings.pagination.active) this.$pagination.find('li').on('click', this.changeSlide.bind(this));
@@ -150,7 +155,7 @@
       if (this.timer) clearInterval(this.timer);
     },
 
-    changeSlide: function(event) {
+    changeSlide: function(event, direction) {
       //Prevent Clicking if animation is in progres
       if (this.setup.animating) return;
 
@@ -161,7 +166,7 @@
       this.stopAutoPlay();    
 
       //Set Direction
-      this.direction(event);
+      this.setup.direction = (direction !== undefined) ? direction : this.direction(event);
 
       //Set Next Slide and proceed to animate if true
       var animate = this.next(event);
@@ -171,18 +176,18 @@
       this.animateSlide(this.setup, this.settings);
     },
 
-    direction: function(event) {    
+    direction: function(event) {  
       if (typeof event !== 'undefined') {
         //Triggered by event
         if (typeof event.data !== 'undefined') {
-          this.setup.direction = event.data.direction;
+          return event.data.direction;
         } else {
           var index = $(event.currentTarget).data('item');
 
           if (index < this.setup.currentSlide) {
-            this.setup.direction = 'left';
+            return 'left';
           } else if (index > this.setup.currentSlide) {
-            this.setup.direction = 'right';
+            return 'right';
           }
         }
       } else {
@@ -392,6 +397,60 @@
 
     hideNavigation: function() {
       this.$navigation.find('li').addClass('hide');
+    },
+
+    initTouch: function() {
+      this.touch = {
+        start: {x: 0, y: 0},
+        end: {x: 0, y: 0}
+      };
+      this.$elem.on('touchstart.slidr', this.onTouchStart.bind(this));
+    },
+
+    onTouchStart: function(event) {
+      if (this.setup.animating) return;
+
+      // Record the starting touch x, y coordinates.
+      this.touch.start.x = event.originalEvent.changedTouches[0].pageX;
+      this.touch.start.y = event.originalEvent.changedTouches[0].pageY;
+      
+      // Bind a "touchmove" event to the slider.
+      this.$elem.on('touchmove.slidr', this.onTouchMove.bind(this));
+      // Bind a "touchend" event to the slider.
+      this.$elem.on('touchend.slidr', this.onTouchEnd.bind(this));
+    },
+
+    onTouchMove: function(event) {
+      var x_movement = Math.abs(event.originalEvent.changedTouches[0].pageX - this.touch.start.x),
+          y_movement = Math.abs(event.originalEvent.changedTouches[0].pageY - this.touch.start.y),
+          change = event.originalEvent.changedTouches[0].pageX - this.touch.start.x;
+
+      if ((x_movement * 3) > y_movement) return;
+    },
+
+    onTouchEnd: function(event) {
+      //Unbind "touchmove"
+      this.$elem.off('touchmove.slidr');
+
+      // Record end x, y positions.
+      this.touch.end.x = event.originalEvent.changedTouches[0].pageX;
+      this.touch.end.y = event.originalEvent.changedTouches[0].pageY;
+
+      // Calculate distance and el's animate property.
+      var distance = this.touch.end.x - this.touch.start.x,
+          leftSwipe = distance < 0,
+          direction = 'left';
+
+      if (Math.abs(distance) < this.settings.swipeThreshold) return;
+
+      if (leftSwipe) {
+        this.changeSlide(event, direction)
+      } else {
+        direction = 'right';
+        this.changeSlide(event, direction);
+      }
+
+      this.$elem.off('touchend.slidr');
     }
 
   });
