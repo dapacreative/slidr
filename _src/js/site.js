@@ -22,7 +22,7 @@ var Site = (function($) {
     },
 
     initSlider: function() {
-      this.$slider.slidr({
+      var slider = this.$slider.slidr({
         mode: "wipe-out",
         easing: "cubic-bezier(1,.1,0,0.9)",
         speed: 500

@@ -1,8 +1,13 @@
 ;(function($, window, document) {
 
   "use strict";
+  
+  /**
+   * ===================================================================================
+   * = Plugin Defaults
+   * ===================================================================================
+   */
 
-  // Create the defaults once
   var pluginName = "slidr",
     defaults = {
       mode: "fade",
@@ -24,16 +29,62 @@
       swipeThreshold: 50,
       responsive: true
     };
+  
+  /**
+   * ===================================================================================
+   * = Plugin Constructor
+   * ===================================================================================
+   */
 
-  // The actual plugin constructor
   function Plugin(elem, options) {
     this.elem = elem;
     this.$elem = $(elem);
     this.settings = $.extend({}, defaults, options);
     this._defaults = defaults;
     this._name = pluginName;
-    this.init();
+    init(this);
   }
+
+  /**
+   * ===================================================================================
+   * = Private Functions
+   * ===================================================================================
+   */
+
+  var init = function(plugin) {
+    // Test for CSS transitions
+    plugin.cssTransitionTest();
+
+    // Create a container around slider
+    plugin.wrapElem();
+
+    // Cache Dom elements
+    plugin.cacheDom();
+
+    // Setup
+    plugin.setup = plugin.setup();
+
+    // Set dimensions for slider
+    plugin.setDimensions(plugin.setup.containers, plugin.setup.dimensions);
+
+    // Build pagination and navigation
+    plugin.build();
+
+    // If initialized start slider
+    if(plugin.setup.initialized) plugin.start();
+
+    // Bind Events
+    plugin.bindEvents();
+
+    // Init Touch 
+    if(plugin.settings.touchEnabled) plugin.initTouch();
+  }
+
+  /**
+   * ===================================================================================
+   * = Public Methods
+   * ===================================================================================
+   */
 
   // Avoid Plugin.prototype conflicts
   $.extend(Plugin.prototype, {
@@ -51,35 +102,6 @@
       }
     },
     
-    init: function() {
-      // Test for CSS transitions
-      this.cssTransitionTest();
-
-      // Create a container around slider
-      this.wrapElem();
-
-      // Cache Dom elements
-      this.cacheDom();
-
-      // Setup
-      this.setup = this.setup();
-
-      // Set dimensions for slider
-      this.setDimensions(this.setup.containers, this.setup.dimensions);
-
-      // Build pagination and navigation
-      this.build();
-
-      // If initialized start slider
-      if(this.setup.initialized) this.start();
-
-      // Bind Events
-      this.bindEvents();
-
-      // Init Touch 
-      if(this.settings.touchEnabled) this.initTouch();
-    },
-
     cacheDom: function() {
       this.$slides = this.$elem.children();
       this.$container = this.$elem.parent();
@@ -455,14 +477,23 @@
 
   });
 
-  // A really lightweight plugin wrapper around the constructor,
-  // preventing against multiple instantiations
+
+  /**
+   * ===================================================================================
+   * = Plugin Wrapper around Constructuro
+   * ===================================================================================
+   */
+
   $.fn[pluginName] = function(options) {
-    return this.each(function() {
-      if (!$.data(this, "plugin_" + pluginName)) {
-        $.data(this, "plugin_" + pluginName, new Plugin(this, options));
+    var plugin;
+    this.each(function() {
+      plugin = $.data(this, 'plugin_' + pluginName);
+      if (!plugin) {
+        plugin = new Plugin(this, options);
+        $.data(this, 'plugin_' + pluginName, plugin);
       }
     });
+    return plugin;
   };
 
 })(jQuery, window, document);
@@ -490,7 +521,7 @@ var Site = (function($) {
     },
 
     initSlider: function() {
-      this.$slider.slidr({
+      var slider = this.$slider.slidr({
         mode: "wipe-out",
         easing: "cubic-bezier(1,.1,0,0.9)",
         speed: 500
