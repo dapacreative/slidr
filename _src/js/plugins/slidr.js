@@ -461,14 +461,14 @@
       // Calculate distance and el's animate property.
       var distance = this.touch.end.x - this.touch.start.x,
           leftSwipe = distance < 0,
-          direction = 'left';
+          direction = 'right';
 
       if (Math.abs(distance) < this.settings.swipeThreshold) return;
 
       if (leftSwipe) {
         this.changeSlide(event, direction)
       } else {
-        direction = 'right';
+        direction = 'left';
         this.changeSlide(event, direction);
       }
 
@@ -480,7 +480,7 @@
 
   /**
    * ===================================================================================
-   * = Plugin Wrapper around Constructuro
+   * = Plugin Wrapper around Constructor
    * ===================================================================================
    */
 
