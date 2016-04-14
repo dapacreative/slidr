@@ -16,11 +16,6 @@ var paths = {
 		src: basePaths.src + 'scss/',
 		dest: basePaths.dest + 'css/'
 	},
-	sprite: {
-		src: basePaths.src + 'svg/*',
-		svg: 'img/sprite.svg',
-		css: '../' + basePaths.src + 'scss/helpers/_sprite.scss'
-	},
 	templates: {
 		src: basePaths.src + 'tpl/'
 	}
@@ -33,14 +28,11 @@ var gulp = require('gulp');
 var jshint = require('gulp-jshint'),
     sass = require('gulp-ruby-sass'),
     autoprefixer = require('gulp-autoprefixer'),
-    minifycss = require('gulp-minify-css'),
+    cleanCSS = require('gulp-clean-css'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
-    livereload = require('gulp-livereload'),
-    svgSprites = require('gulp-svg-sprites'),
-    svg2png = require('gulp-svg2png'),
-    svgo = require('gulp-svgo');
+    livereload = require('gulp-livereload');
 
 // Lint Task
 gulp.task('lint', function() {
@@ -56,7 +48,7 @@ gulp.task('sass', function() {
         .pipe(autoprefixer('last 2 version', 'ie 9', 'ie 8'))
         .pipe(gulp.dest('./assets/css'))
         .pipe(rename({suffix: '.min'}))
-        .pipe(minifycss())
+        .pipe(cleanCSS({compatibility: 'ie9'}))
         .pipe(gulp.dest('./assets/css'));
 });
 
@@ -69,43 +61,6 @@ gulp.task('scripts', function() {
         .pipe(uglify())
         .pipe(gulp.dest('./assets/js'));
 });
-
-// Create SVG Sprites
-gulp.task('svgSprite', function () {
-
-	return gulp.src(paths.sprite.src)
-		.pipe(svgo())
-		.pipe(svgSprites({
-			cssFile: paths.sprite.css,
-			preview: false,
-			layout: 'horizontal',
-			padding: 5,
-			svg: {
-				sprite: paths.sprite.svg
-			},
-			templates: {
-				css: require("fs").readFileSync(paths.templates.src + 'sprite-template.scss', "utf-8")
-			}
-		}))
-		.pipe(gulp.dest(basePaths.dest));
-
-});
-
-// Create PNG from SVG
-gulp.task('pngSprite', ['svgSprite'], function() {
-	return gulp.src(basePaths.dest + paths.sprite.svg)
-		.pipe(svg2png())
-		.pipe(gulp.dest(paths.images.dest));
-});
-
-gulp.task('svg2png', function() {
-	return gulp.src('assets/img/*.svg')
-		.pipe(svg2png())
-		.pipe(gulp.dest(paths.images.dest));
-});
-
-// Combine SVG and PNG tasks
-gulp.task('sprite', ['pngSprite']);
 
 // Watch Files For Changes
 gulp.task('watch', function() {

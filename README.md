@@ -1,2 +1,2 @@
 Slider Plugin
-Author: Banyan Communications
+Author: Daniel Smith
